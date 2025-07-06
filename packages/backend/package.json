@@ -4,7 +4,7 @@
   "description": "Task Manager Backend",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "echo \"Error: dev script not implemented yet\" && exit 1",
+    "dev": "nodemon",
     "prisma": "prisma"
   },
   "keywords": [],
@@ -17,5 +17,8 @@
     "prisma": "^6.11.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
