@@ -1,7 +1,7 @@
 services:
   # PostgreSQL Database Service
   db:
-    image: postgres:15 
+    image: postgres:15
     restart: always
     environment:
       POSTGRES_USER: myuser
@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: taskdb
     ports:
       # Expose DB port to the host machine
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       # Persist database data
       - postgres_data:/var/lib/postgresql/data
@@ -21,13 +21,13 @@ services:
       context: ./packages/backend
     ports:
       # Expose the backend's port
-      - "3001:3001"
+      - '3001:3001'
     depends_on:
       # Ensures the db service starts before the backend
       - db
     environment:
       # Connection URL for Prisma, using the service name 'db'
-      DATABASE_URL: "postgresql://myuser:mypassword@db:5432/taskdb?schema=public"
+      DATABASE_URL: 'postgresql://myuser:mypassword@db:5432/taskdb?schema=public'
       PORT: 3001
     volumes:
       # Sync local code with the container for live development
@@ -42,7 +42,7 @@ services:
       context: ./packages/frontend
     ports:
       # Default Vite port
-      - "5173:5173"
+      - '5173:5173'
     volumes:
       # Sync local code with the container for live development
       - ./packages/frontend:/usr/src/app
