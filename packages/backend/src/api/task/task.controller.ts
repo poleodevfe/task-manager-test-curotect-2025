@@ -9,3 +9,16 @@ export const getAllTaskController = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error getting all tasks', error });
   }
 };
+
+export const createTaskController = async (req: Request, res: Response) => {
+  try {
+    const { title, description } = req.body;
+    if (!title) {
+      return res.status(400).json({ message: 'Title is required' });
+    }
+    const newTask = await TaskService.createTask(title, description);
+    res.status(201).json(newTask);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating task', error });
+  }
+};
