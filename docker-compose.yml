@@ -1,0 +1,53 @@
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15 
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: taskdb
+    ports:
+      # Expose DB port to the host machine
+      - "5432:5432"
+    volumes:
+      # Persist database data
+      - postgres_data:/var/lib/postgresql/data
+
+  # Backend Service (Node.js)
+  backend:
+    build:
+      # Points to the backend's Dockerfile
+      context: ./packages/backend
+    ports:
+      # Expose the backend's port
+      - "3001:3001"
+    depends_on:
+      # Ensures the db service starts before the backend
+      - db
+    environment:
+      # Connection URL for Prisma, using the service name 'db'
+      DATABASE_URL: "postgresql://myuser:mypassword@db:5432/taskdb?schema=public"
+      PORT: 3001
+    volumes:
+      # Sync local code with the container for live development
+      - ./packages/backend:/usr/src/app
+      # Prevent local node_modules from overwriting the container's one
+      - /usr/src/app/node_modules
+
+  # Frontend Service (React + Vite)
+  frontend:
+    build:
+      # Points to the frontend's Dockerfile
+      context: ./packages/frontend
+    ports:
+      # Default Vite port
+      - "5173:5173"
+    volumes:
+      # Sync local code with the container for live development
+      - ./packages/frontend:/usr/src/app
+      # Prevent local node_modules from overwriting the container's one
+      - /usr/src/app/node_modules
+
+volumes:
+  postgres_data:
