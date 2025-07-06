@@ -3,11 +3,14 @@ FROM node:20-alpine
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json to leverage Docker's layer caching
-COPY package.json ./
+# Install pnpm and configure a consistent store path to prevent conflicts
+RUN npm install -g pnpm@9.12.2 && pnpm config set store-dir /usr/src/app/.pnpm-store
 
-# Install pnpm globally and then install dependencies
-RUN npm install -g pnpm@9.12.2 && pnpm install
+# Copy package definition files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies
+RUN pnpm install
 
 # Copy the rest of the application's source code
 COPY . .
@@ -16,5 +19,4 @@ COPY . .
 EXPOSE 3001
 
 # Command to start the application in development mode
-# This will be overridden later by a more specific start script
 CMD ["pnpm", "run", "dev"]
