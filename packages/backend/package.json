@@ -4,7 +4,8 @@
   "description": "Task Manager Backend",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "echo \"Error: dev script not implemented yet\" && exit 1"
+    "dev": "echo \"Error: dev script not implemented yet\" && exit 1",
+    "prisma": "prisma"
   },
   "keywords": [],
   "author": "",
