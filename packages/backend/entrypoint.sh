@@ -1,3 +1,6 @@
+#!/bin/sh
+# entrypoint.sh
+
 echo "Waiting for PostgreSQL to be ready..."
 sleep 5
 
