@@ -47,6 +47,30 @@ Ensure you have the following installed on your system:
 
 ---
 
+### Verifying the Setup
+
+You will know everything is running correctly when you see the following log output from the backend and frontend services in your terminal:
+
+**Backend Ready:**
+
+```
+...
+backend-1  | [nodemon] starting `ts-node ./src/server.ts`
+backend-1  | Server running on port http://localhost:3001
+...
+```
+
+**Frontend Ready:**
+
+```
+...
+frontend-1 |   VITE v...  ready in ...
+frontend-1 |   ➜  Local:   http://localhost:5173/
+...
+```
+
+---
+
 ## 🌐 Accessing the Application
 
 Once the containers are up and running, you can access the services:
