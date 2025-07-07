@@ -1,22 +1,14 @@
-# Git
-.git
-.gitignore
-
 # Docker
 Dockerfile
 .dockerignore
 
 # Dependencies
 node_modules
-
-# Environment
-.env
-.env.*
-
-# Logs
-logs
-*.log
-pnpm-debug.log*
+.pnpm-store
 
 # Build output
 dist
+
+# Git
+.git
+.gitignore

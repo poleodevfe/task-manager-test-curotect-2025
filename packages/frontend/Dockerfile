@@ -12,5 +12,4 @@ COPY . .
 
 EXPOSE 5173
 
-# Command to start the Vite development server
-CMD ["pnpm", "run", "dev"]
+CMD ["node_modules/.bin/vite", "--host"]
