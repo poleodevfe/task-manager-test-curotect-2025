@@ -34,7 +34,6 @@ services:
       - ./packages/backend:/usr/src/app
       # Prevent local node_modules from overwriting the container's one
       - /usr/src/app/node_modules
-
   # Frontend Service (React + Vite)
   frontend:
     build:
