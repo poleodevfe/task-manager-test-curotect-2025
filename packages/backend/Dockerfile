@@ -11,5 +11,10 @@ RUN pnpm install && pnpm exec prisma generate
 
 COPY . .
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 3001
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["pnpm", "run", "dev"]
