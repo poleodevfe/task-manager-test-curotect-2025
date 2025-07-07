@@ -1,18 +1,15 @@
 FROM node:20-alpine
 
-# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json to leverage Docker's layer caching
-COPY package.json ./
+RUN npm install -g pnpm@9.12.2 && pnpm config set store-dir /usr/src/app/.pnpm-store
 
-# Install pnpm globally and then install dependencies
-RUN npm install -g pnpm@9.12.2 && pnpm install
+COPY package.json pnpm-lock.yaml* ./
 
-# Copy the rest of the application's source code
+RUN pnpm install
+
 COPY . .
 
-# Expose the Vite default port
 EXPOSE 5173
 
 # Command to start the Vite development server
