@@ -23,9 +23,25 @@ export default tseslint.config(
 
   {
     files: ['packages/frontend/**/*.{ts,tsx}'],
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': hooksPlugin,
+      'react-refresh': refreshPlugin,
+    },
     languageOptions: {
-      globals: {
-        ...globals.browser,
+      globals: { ...globals.browser },
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      ...reactPlugin.configs.recommended.rules,
+      ...hooksPlugin.configs.recommended.rules,
+      'react-refresh/only-export-components': 'warn',
+    },
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
   }
