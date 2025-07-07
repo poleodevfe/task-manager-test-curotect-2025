@@ -5,19 +5,26 @@ RUN apk add --no-cache curl
 
 WORKDIR /usr/src/app
 
+# install pnpm and set the store directory
 RUN npm install -g pnpm@9.12.2 && pnpm config set store-dir /usr/src/app/.pnpm-store
 
+# copy package.json and pnpm-lock.yaml files
 COPY package.json pnpm-lock.yaml* ./
-COPY prisma ./prisma
 
-RUN pnpm install && pnpm exec prisma generate
+# install dependencies
+RUN pnpm install
 
+# copy the rest of the files, including entrypoint.sh (assuming it's in packages/backend/)
 COPY . .
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# generate Prisma client
+RUN pnpm exec prisma generate
+
+# set the entrypoint script permissions for the entrypoint.sh in the WORKDIR
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3001
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Set the entrypoint to the correct path within the WORKDIR
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["pnpm", "run", "dev"]
