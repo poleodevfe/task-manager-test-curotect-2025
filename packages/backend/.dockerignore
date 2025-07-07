@@ -8,6 +8,7 @@ Dockerfile
 
 # Dependencies
 node_modules
+.pnpm-store
 
 # Environment
 .env
