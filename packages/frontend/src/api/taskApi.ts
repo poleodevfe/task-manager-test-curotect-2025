@@ -1,3 +1,10 @@
+export type UpdateTaskPayload = {
+  id: number;
+  title?: string;
+  description?: string;
+  completed?: boolean;
+};
+
 export interface Task {
   id: string;
   title: string;
@@ -34,4 +41,32 @@ export const createTask = async (
   }
 
   return await response.json();
+};
+
+// update task
+export const updateTask = async (
+  updateTask: UpdateTaskPayload
+): Promise<Task> => {
+  const response = await fetch(API_URL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updateTask),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to update task');
+  }
+  return await response.json();
+};
+
+// delete task
+export const deleteTask = async (id: number): Promise<void> => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete task');
+  }
 };
