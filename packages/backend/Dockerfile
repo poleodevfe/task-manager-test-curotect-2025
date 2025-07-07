@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
 # we need curl to validate the healthcheck
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl openssl ncurses-libs
 
 WORKDIR /usr/src/app
 

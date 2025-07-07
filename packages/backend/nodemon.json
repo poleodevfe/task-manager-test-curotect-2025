@@ -2,5 +2,10 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node ./src/server.ts"
+  "execMap": {
+    "ts": "ts-node"
+  },
+  "events": {
+    "start": "echo 'Starting the server...'"
+  }
 }
