@@ -1,15 +1,31 @@
 import prisma from '../../lib/prisma';
 
-// get all tasks
 export const getAllTasks = async () => {
-  return await prisma.task.findMany();
+  return prisma.task.findMany();
+};
+
+export const getTaskById = async (id: number) => {
+  return prisma.task.findUnique({ where: { id } });
 };
 
 export const createTask = async (title: string, description?: string) => {
-  return await prisma.task.create({
-    data: {
-      title,
-      description,
-    },
+  return prisma.task.create({
+    data: { title, description },
   });
+};
+
+export const updateTask = async (
+  id: number,
+  title: string,
+  description: string,
+  completed: boolean
+) => {
+  return prisma.task.update({
+    where: { id },
+    data: { title, description, completed },
+  });
+};
+
+export const deleteTask = async (id: number) => {
+  return prisma.task.delete({ where: { id } });
 };

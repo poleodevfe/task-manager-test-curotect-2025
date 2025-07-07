@@ -1,5 +1,6 @@
 import express from 'express';
 import type { Express, Request, Response } from 'express';
+import taskRoutes from './api/task/task.routes';
 
 const app: Express = express();
 
@@ -10,5 +11,7 @@ app.use(express.json());
 app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'UP' });
 });
+
+app.use('/api/task', taskRoutes);
 
 export default app;
