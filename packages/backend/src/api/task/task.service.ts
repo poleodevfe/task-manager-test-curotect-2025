@@ -14,15 +14,16 @@ export const createTask = async (title: string, description?: string) => {
   });
 };
 
-export const updateTask = async (
-  id: number,
-  title: string,
-  description: string,
-  completed: boolean
-) => {
+interface UpdateTaskInput {
+  title?: string;
+  description?: string;
+  completed?: boolean;
+}
+
+export const updateTask = async (id: number, data: UpdateTaskInput) => {
   return prisma.task.update({
     where: { id },
-    data: { title, description, completed },
+    data,
   });
 };
 

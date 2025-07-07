@@ -1,5 +1,5 @@
 export type UpdateTaskPayload = {
-  id: number;
+  id: string;
   title?: string;
   description?: string;
   completed?: boolean;
@@ -47,7 +47,7 @@ export const createTask = async (
 export const updateTask = async (
   updateTask: UpdateTaskPayload
 ): Promise<Task> => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/${updateTask.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const updateTask = async (
 };
 
 // delete task
-export const deleteTask = async (id: number): Promise<void> => {
+export const deleteTask = async (id: string): Promise<void> => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'DELETE',
   });

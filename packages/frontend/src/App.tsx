@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { createTask, getTask, type Task } from './api/taskApi';
+import {
+  createTask,
+  deleteTask,
+  getTask,
+  updateTask,
+  type Task,
+  type UpdateTaskPayload,
+} from './api/taskApi';
 import './App.css';
 
 function App() {
@@ -30,6 +37,23 @@ function App() {
     },
   });
 
+  // mutation to update a task
+  const { mutate: editTask } = useMutation({
+    mutationFn: updateTask,
+    onSuccess: () => {
+      // when we update a task we invalidate the query to update the task list
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+
+  const { mutate: removeTask } = useMutation({
+    mutationFn: deleteTask,
+    onSuccess: () => {
+      // when we delete a task we invalidate the query to update the task list
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+
   // Form handler
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,6 +63,20 @@ function App() {
       description: description || '',
       status: 'pending',
     });
+  };
+
+  const handleToggleComplete = (task: Task) => {
+    const updatedTaskPayload: UpdateTaskPayload = {
+      id: task.id,
+      completed: !task.completed,
+    };
+    editTask(updatedTaskPayload);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      removeTask(id);
+    }
   };
 
   return (
@@ -93,7 +131,7 @@ function App() {
             {tasks?.map((task) => (
               <li
                 key={task.id}
-                className="p-4 bg-slate-800 rounded-lg flex justify-between items-center shadow-md"
+                className="p-4 bg-slate-800 rounded-lg flex justify-between items-center shadow-md flex-col"
               >
                 <div>
                   <h3 className="text-xl font-semibold">{task.title}</h3>
@@ -101,11 +139,20 @@ function App() {
                     <p className="text-slate-400">{task.description}</p>
                   )}
                 </div>
-                <span
-                  className={`px-3 py-1 text-sm font-semibold rounded-full ${task.completed ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'}`}
-                >
-                  {task.completed ? 'Completed' : 'Pending'}
-                </span>
+                <div className="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-5">
+                  <button
+                    onClick={() => handleToggleComplete(task)}
+                    className="px-3 py-1 text-sm font-semibold rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+                  >
+                    {task.completed ? 'Undo' : 'Complete'}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(task.id)}
+                    className="px-3 py-1 text-sm font-semibold rounded-full bg-red-500/20 text-red-300 hover:bg-red-500/30 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
