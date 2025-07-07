@@ -8,17 +8,18 @@ WORKDIR /usr/src/app
 # install pnpm and set the store directory
 RUN npm install -g pnpm@9.12.2 && pnpm config set store-dir /usr/src/app/.pnpm-store
 
-# copy package.json and pnpm-lock.yaml files
+# copy package.json and pnpm-lock.yaml files for the backend service
 COPY package.json pnpm-lock.yaml* ./
 
-# install dependencies
 RUN pnpm install
 
-# copy the rest of the files, including entrypoint.sh (assuming it's in packages/backend/)
-COPY . .
+COPY prisma ./prisma
+COPY entrypoint.sh ./entrypoint.sh
 
 # generate Prisma client
 RUN pnpm exec prisma generate
+
+COPY . .
 
 # set the entrypoint script permissions for the entrypoint.sh in the WORKDIR
 RUN chmod +x ./entrypoint.sh
