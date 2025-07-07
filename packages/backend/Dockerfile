@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+# we need curl to validate the healthcheck
+RUN apk add --no-cache curl
+
 WORKDIR /usr/src/app
 
 RUN npm install -g pnpm@9.12.2 && pnpm config set store-dir /usr/src/app/.pnpm-store
